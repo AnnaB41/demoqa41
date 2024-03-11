@@ -1,7 +1,6 @@
 package config;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.bouncycastle.oer.its.ieee1609dot2.basetypes.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -16,21 +15,34 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import java.time.Duration;
+
 public class ConfigManager { // on the lessons: BaseTest.java
 
-    private static WebDriver driver;
+    public static WebDriver driver;
 
 
-    public static WebDriver getDriver() {
-        if(driver == null) {
-            setUp();
-        }
+
+    public static WebDriver getDriver() { // даем время подождать
+//        int counter = 0;
+//        while (driver == null || counter <= 5){
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+        //singleton
+//        if(driver == null) {
+//            setUp("chrome");
+//        }
         return driver;
     }
 
-    @BeforeSuite
+   @BeforeSuite
     @Parameters("browser")
-    private static void setUp(@Optional("chrome") String browser) {
+    public static void setUp(@Optional("chrome") String browser) {
         if(browser.equalsIgnoreCase("chrome")) {
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--lang=en");
@@ -61,12 +73,20 @@ public class ConfigManager { // on the lessons: BaseTest.java
         else {
             throw new IllegalArgumentException("Ivalid browser name: " + browser);
         }
-        driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(Duration.);
+        driver.manage().window().maximize(); // открываем окно по максимуму
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20)); // ожидалка загрузки страницы до 20 сек (это максимум)
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20)); // когда ищем элемент файнд, ждем до 60 сек
+        // если он появляется То берем, ждем до 60 секунд
+     //   driver.navigate().to("https://demoqa.com/");  // открываем страницу
+       navigateToMainPage();
+    }
+
+    public static void navigateToMainPage(){
+        driver.navigate().to("https://demoqa.com/");
     }
 
     @AfterSuite
-    private static void tearDown() {
+    public static void tearDown() {
 
         driver.quit(); // закрывает браузер и подчищает кукис
     }
