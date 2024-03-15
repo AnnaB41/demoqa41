@@ -17,7 +17,9 @@ public class ScreenShotManager {
         try{String screenshotName = testName+"_"+System.currentTimeMillis()+".png";
             File screenshotFile = ((TakesScreenshot) ConfigManager.getDriver()).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshotFile, new File("screenshots/"+screenshotName));
+            // for mac both return are correct
             return Files.readAllBytes(Paths.get("screenshots\\"+screenshotName));
+            //  return Files.readAllBytes(Paths.get("screenshots/"+screenshotName));
         }
         catch (IOException e){
             return null;
