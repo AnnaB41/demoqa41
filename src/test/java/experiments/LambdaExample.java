@@ -1,9 +1,19 @@
 package experiments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LambdaExample {
+    public static void increasePrice(){
+        List<Double> prices = Arrays.asList(10.0,20.0,30.0);
+        prices.replaceAll(price -> price * 1.1);
+        prices.forEach(System.out::println);
+
+    }
     public static void main(String[] args) {
+        increasePrice();
         ArrayList<Integer> arrL = new ArrayList<Integer>();
         arrL.add(1);
         arrL.add(2);
